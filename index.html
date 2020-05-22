@@ -12,6 +12,7 @@
 
   gtag('config', 'UA-163947610-1');
 </script>
+<script src="https://js.stripe.com/v3/"></script>
   <meta charset="utf-8">
   <title>Program budgeting</title>
   <meta content="Structure your budget more closely to your objectives and outcomes. Program budgeting helps you prioritize your resources by ensuring funds are spent on activities that produce the best outcomes for your organization." name="description">
@@ -264,7 +265,7 @@
               <p class="pricing-table-background">Included</p>
               <p>Not Included</p>
               <div class="pricing-table-space"></div>
-              <h4>$49/Month</h4><a href="https://donation.gofundra.com/nonprofits/register" class="button pricing-table-button w-button">Buy Now</a></div>
+              <h4>$49/Month</h4><a href="#" id="checkout-button-sku_HK3SJ3xkOj6uhX" class="button pricing-table-button w-button">Buy Now</a></div>
             <div class="pricing-table-box w-clearfix">
               <h4 class="princing-table-title">Enterprise</h4>
               <div class="pricing-table-psace-titles"></div>
@@ -351,7 +352,7 @@
               <p class="pricing-table-background">Included</p>
               <p>Not Included</p>
               <div class="pricing-table-space"></div>
-              <h4>$49/Month</h4><a href="https://donation.gofundra.com/nonprofits/register" class="button pricing-table-button w-button">Buy Now</a></div>
+              <h4>$49/Month</h4><a href="#" id="checkout-button-sku_HK3SJ3xkOj6uhX" class="button pricing-table-button w-button">Buy Now</a></div>
             <div class="pricing-table-box w-clearfix">
               <h4 class="princing-table-title">Enterprise</h4>
               <div class="pricing-table-psace-titles"></div>
@@ -426,7 +427,7 @@
               <p class="plan-table-box-responsive-paragraph"><em>Live support<br>‍</em><strong>Not Included</strong></p>
               <p class="plan-table-box-responsive-paragraph"><em>Individualized On-Boarding &amp; Training<br>‍</em><strong>Included</strong></p>
               <p class="plan-table-box-responsive-paragraph"><em>Dedicated Success Manager<br></em><strong>Not Included</strong></p>
-              <h4>$49/Month</h4><a href="https://donation.gofundra.com/nonprofits/register" class="button plans-table-box-responsive-button w-button">Buy Now</a></div>
+              <h4>$49/Month</h4><a href="#" id="checkout-button-sku_HK3SJ3xkOj6uhX" class="button plans-table-box-responsive-button w-button">Buy Now</a></div>
             <div class="plans-table-box-responsive w-clearfix">
               <h4>Enterprise</h4>
               <h6 class="plan-table-box-responsive-title">Features</h6>
@@ -488,7 +489,7 @@
               <p class="plan-table-box-responsive-paragraph"><em>Live support<br>‍</em><strong>Not Included</strong></p>
               <p class="plan-table-box-responsive-paragraph"><em>Individualized On-Boarding &amp; Training<br>‍</em><strong>Included</strong></p>
               <p class="plan-table-box-responsive-paragraph"><em>Dedicated Success Manager<br></em><strong>Not Included</strong></p>
-              <h4>$49/Month</h4><a href="#" class="button plans-table-box-responsive-button w-button">Buy Now</a></div>
+              <h4>$49/Month</h4><a href="#" id="checkout-button-sku_HK3SJ3xkOj6uhX" class="button plans-table-box-responsive-button w-button">Buy Now</a></div>
             <div class="plans-table-box-responsive w-clearfix">
               <h4>Enterprise</h4>
               <h6 class="plan-table-box-responsive-title">Features</h6>
@@ -602,6 +603,8 @@
         <div>Oops! Something went wrong while submitting the form.</div>
       </div> -->
     </div>
+    <div id="error-message"></div>
+
   </div>
 <script src="https://wzrd.in/standalone/formdata-polyfill"></script>
 <script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
@@ -623,7 +626,36 @@
       .catch(error => console.error('Error!', error.message))
   })
 </script>
-
+<script>
+  (function() {
+    var stripe = Stripe('pk_live_zQItQe8A2MxO7WxHlYY9mjU7');
+  
+    var checkoutButton = document.getElementById('checkout-button-sku_HK3SJ3xkOj6uhX');
+    checkoutButton.addEventListener('click', function () {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        lineItems: [{price: 'sku_HK3SJ3xkOj6uhX', quantity: 1}],
+        mode: 'payment',
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: 'https://programbudgeting.com/',
+        cancelUrl: 'https://programbudgeting.com/',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message');
+          displayError.textContent = result.error.message;
+        }
+      });
+    });
+  })();
+  </script>
 
 
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
