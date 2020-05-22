@@ -628,14 +628,16 @@
 </script>
 <script>
   (function() {
-    var stripe = Stripe('pk_live_zQItQe8A2MxO7WxHlYY9mjU7');
+    var stripe = Stripe('pk_test_t5HCgFEiKaPbXjVTUyfvwzjo');
+
+    // pk_live_zQItQe8A2MxO7WxHlYY9mjU7 
   
     var checkoutButton = document.getElementById('checkout-button-sku_HK3SJ3xkOj6uhX');
     checkoutButton.addEventListener('click', function () {
       // When the customer clicks on the button, redirect
       // them to Checkout.
       stripe.redirectToCheckout({
-        lineItems: [{price: 'sku_HK3SJ3xkOj6uhX', quantity: 1}],
+        lineItems: [{price: 'sku_HK3joGhRK2Pdyv', quantity: 1}],
         mode: 'payment',
         // Do not rely on the redirect to the successUrl for fulfilling
         // purchases, customers may not always reach the success_url after
